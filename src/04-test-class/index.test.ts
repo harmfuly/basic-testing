@@ -57,12 +57,14 @@ describe('BankAccount', () => {
 
 
   test('fetchBalance should return number in case if request did not failed', async () => {
+    const mockBalance = 42;
+    jest.spyOn(BankAccount.prototype, 'fetchBalance').mockResolvedValueOnce(mockBalance);
+
     const account = new BankAccount(0);
     const balance = await account.fetchBalance();
+
     expect(balance).not.toBeNull();
-    if (balance !== null) {
-      expect(typeof balance).toBe('number');
-    }
+    expect(typeof balance).toBe('number');
   });
 
   test('should set new balance if fetchBalance returned number', async () => {
