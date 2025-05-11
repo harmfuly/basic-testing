@@ -26,7 +26,7 @@ describe('throttledGetDataFromApi', () => {
     await throttledFn;
 
     expect(axios.create).toHaveBeenCalledWith({
-      baseURL: 'https://jsonplaceholder.typicode.com'
+      baseURL: 'https://jsonplaceholder.typicode.com',
     });
   });
 
@@ -42,7 +42,7 @@ describe('throttledGetDataFromApi', () => {
     await throttledFn;
 
     expect(axios.create).toHaveBeenCalledWith({
-      baseURL: 'https://jsonplaceholder.typicode.com'
+      baseURL: 'https://jsonplaceholder.typicode.com',
     });
 
     expect(axiosClient.get).toHaveBeenCalledWith('/posts');
@@ -62,5 +62,4 @@ describe('throttledGetDataFromApi', () => {
 
     expect(result).toEqual(expectedData);
   });
-
 });

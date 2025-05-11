@@ -1,5 +1,6 @@
 import { readFileAsynchronously, doStuffByTimeout, doStuffByInterval } from '.';
 import * as fs from 'fs';
+import * as path from 'path';
 
 jest.mock('fs', () => ({
   ...jest.requireActual('fs'),
@@ -75,13 +76,13 @@ describe('doStuffByInterval', () => {
     expect(setIntervalSpy).toHaveBeenCalledWith(expect.any(Function), interval);
     expect(callback).toHaveBeenCalledTimes(1);
   });
-  
+
   test('should call callback multiple times after multiple intervals', () => {
     const callback = jest.fn();
     const interval = 1000;
-  
+
     doStuffByInterval(callback, interval);
-  
+
     expect(callback).not.toHaveBeenCalled();
     jest.advanceTimersByTime(interval * 3);
     expect(callback).toHaveBeenCalledTimes(3);
@@ -90,8 +91,8 @@ describe('doStuffByInterval', () => {
 
 describe('readFileAsynchronously', () => {
   test('should call join with pathToFile', async () => {
-    const pathToFile: string = 'file.txt';
-    const joinMock = jest.spyOn(require('path'), 'join');
+    const pathToFile = 'file.txt';
+    const joinMock = jest.spyOn(path, 'join');
 
     await readFileAsynchronously(pathToFile);
 
@@ -111,7 +112,9 @@ describe('readFileAsynchronously', () => {
     const existingFile = 'existingfile.txt';
     const fileContent = 'Hello, World!';
     (fs.existsSync as jest.Mock).mockReturnValue(true);
-    jest.spyOn(fs.promises, 'readFile').mockResolvedValueOnce(Buffer.from(fileContent));
+    jest
+      .spyOn(fs.promises, 'readFile')
+      .mockResolvedValueOnce(Buffer.from(fileContent));
 
     const result = await readFileAsynchronously(existingFile);
     expect(result).toBe(fileContent);
